@@ -8,15 +8,13 @@
     <record id="helpdesk_ticket_view_tree" model="ir.ui.view">
         <field name="name">helpdesk.ticket.tree</field>
         <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_tree"/>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_type_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
                 <attribute name="decoration-info">stage_id.name == 'New'</attribute>
                 <attribute name="default_order">priority desc, id desc</attribute>
             </xpath>
             <xpath expr="//tree" position="inside">
-                <button name="%(ticket_merge.action_ticket_merge_wizard)d" string="Merge Tickets" type="action" 
-                        attrs="{'invisible': [('id', '=', False)]}"/>
             </xpath>
         </field>
     </record>

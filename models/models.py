@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
+from odoo import api, fields, models
 
-# from odoo import models, fields, api
+class TicketMergeWizard(models.TransientModel):
+    _name = 'ticket.merge.wizard'
+    _description = 'Wizard to merge tickets'
 
+    ticket_ids = fields.Many2many('helpdesk.ticket', string='Tickets to Merge')
 
-# class ticket_merge(models.Model):
-#     _name = 'ticket_merge.ticket_merge'
-#     _description = 'ticket_merge.ticket_merge'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    def merge_tickets(self):
+        self.ensure_one()
+        # You might want to implement a more sophisticated merging logic
+        main_ticket = self.ticket_ids[0]
+        for ticket in self.ticket_ids[1:]:
+            main_ticket.description += "\n\n" + ticket.description
+            ticket.unlink()
+        return {}
