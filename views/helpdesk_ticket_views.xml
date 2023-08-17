@@ -1,21 +1,39 @@
 <odoo>
-    <record id="helpdesk_ticket_action" model="ir.actions.act_window">
-        <field name="name">Helpdesk Tickets</field>
-        <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-    
-    <record id="helpdesk_ticket_view_tree" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.tree</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_type_view_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree" position="attributes">
-                <attribute name="decoration-info">stage_id.name == 'New'</attribute>
-                <attribute name="default_order">priority desc, id desc</attribute>
-            </xpath>
-            <xpath expr="//tree" position="inside">
-            </xpath>
-        </field>
-    </record>
+    <data>
+        
+
+      
+        <record id="view_helpdesk_ticket_form_inherit" model="ir.ui.view">
+            <field name="name">Helpdesk Ticket Merge</field>
+            <field name="model">ticket.merge.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Helpdesk Ticket">
+                    <!-- Existing fields and elements in the form... -->
+
+                    <field name="main_ticket_id"/>
+                    <field name="secondary_ticket_ids"/>
+                   
+              
+                    <!-- Add the button to the form -->
+                   
+                        <button name="merge_tickets" string="Merge Tickets" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+              
+
+                    <!-- Other form elements... -->
+                </form>
+            </field>
+        </record>
+
+      <record model="ir.ui.view" id="helpdesk_ticket_form_view">
+            <field name="name">helpdesk.ticket.form</field>
+            <field name="model">ticket.helpdesk.in</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="merged_tickets"/>
+                </field>
+            </field>
+        </record>
+    </data>
 </odoo>

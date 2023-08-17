@@ -4,7 +4,8 @@
         <field name="model">ticket.merge.wizard</field>
         <field name="arch" type="xml">
             <form string="Merge Tickets">
-                <field name="ticket_ids"/>
+             <field name="main_ticket_id"/>
+                    <field name="secondary_ticket_ids"/>
                 <footer>
                     <button name="merge_tickets" string="Merge" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
