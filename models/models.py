@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError
 class TicketMergeWizard(models.TransientModel):
     _name = 'ticket.merge.wizard'
     _description = 'Ticket Merge Wizard'
@@ -13,7 +13,14 @@ class TicketMergeWizard(models.TransientModel):
 
         # Merge information from secondary tickets into the main ticket
         for secondary_ticket in secondary_tickets:
-            main_ticket.name += "," + secondary_ticket.name
+            if( main_ticket.partner_id != secondary_ticket.partner_id or
+            main_ticket.user_id != secondary_ticket.user_id or
+            main_ticket.team_id != secondary_ticket.team_id
+            or
+            main_ticket.stage_id != secondary_ticket.stage_id):
+                raise UserError("Cannot merge tickets with different stage or partner or assigneds or contact.")
+            
+            main_ticket.name = main_ticket.name
             secondary_ticket.message_post(body='This ticket has been merged into another ticket.')
             secondary_ticket.unlink()
 
